@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Employee Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="number"] {
+        padding: 5px;
+        width: 300px;
+      }
+
+      .radio-group {
+        display: flex; 
+        gap: 20px; 
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+
+      .radio-group label {
+        margin-right: 15px;
+      }
+      #output {
+        margin-top: 20px;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const form = document.createElement("form");
+
+      const heading = document.createElement("h2");
+      heading.textContent = "Employee Details";
+      form.appendChild(heading);
+
+      // Define fields
+      const fields = [
+        { label: "First Name: ", type: "text", id: "firstName" },
+        { label: "Last Name: ", type: "text", id: "lastName" },
+        { label: "Employee ID: ", type: "text", id: "employeeId" },
+        { label: "Designation: ", type: "text", id: "designation" },
+        { label: "Phone Number: ", type: "tel", id: "phoneNumber" },
+      ];
+
+      fields.forEach((field) => {
+        const label = document.createElement("label");
+        label.textContent = field.label;
+
+        const input = document.createElement("input");
+        input.type = field.type;
+        input.id = field.id;
+        input.required = true;
+
+        label.appendChild(input);
+        form.appendChild(label);
+        if (field.id === "lastName") {
+          const radioGroup = document.createElement("div");
+          radioGroup.className = "radio-group";
+          const sexes = ["Male", "Female"];
+          sexes.forEach((sex) => {
+            const radioLabel = document.createElement("label");
+            const radioInput = document.createElement("input");
+            radioInput.type = "radio";
+            radioInput.name = "sex";
+            radioInput.value = sex;
+            radioInput.required = true;
+            radioLabel.appendChild(radioInput);
+            radioLabel.append(` ${sex}`);
+            radioGroup.appendChild(radioLabel);
+          });
+          form.appendChild(radioGroup);
+        }
+      });
+
+      // Submit Button
+      const submitBtn = document.createElement("button");
+      submitBtn.type = "submit";
+      submitBtn.textContent = "Submit";
+      form.appendChild(submitBtn);
+
+      // Output section
+      const outputDiv = document.createElement("div");
+      outputDiv.id = "output";
+
+      document.body.appendChild(form);
+      document.body.appendChild(outputDiv);
+
+      // Handle form submission
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const employeeId = document.getElementById("employeeId").value;
+        const designation = document.getElementById("designation").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const sex = document.querySelector('input[name="sex"]:checked')?.value;
+        outputDiv.innerHTML = `
+        <h3>Submitted Employee Details:</h3>
+        <p><strong>First Name:</strong> ${firstName}</p>
+        <p><strong>Last Name:</strong> ${lastName}</p>
+        <p><strong>Sex:</strong> ${sex}</p>
+        <p><strong>Employee ID:</strong> ${employeeId}</p>
+        <p><strong>Designation:</strong> ${designation}</p>
+        <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+      `;
+
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
